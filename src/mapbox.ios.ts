@@ -305,10 +305,17 @@ export class Mapbox extends MapboxCommon implements MapboxApi {
     return new Promise((resolve, reject) => {
       try {
         let theMap: MGLMapView = nativeMap || _mapbox.mapView;
+        let level = options.level;
         let animated = options.animated === undefined || options.animated;
         let coordinate = CLLocationCoordinate2DMake(options.lat, options.lng);
         theMap.setCenterCoordinateAnimated(coordinate, animated);
         resolve();
+        if (level >= 0 && level <= 20) {
+          theMap.setZoomLevelAnimated(level, animated);
+          resolve();
+        } else {
+          reject("invalid zoomlevel, use any double value from 0 to 20 (like 8.3)");
+        }
       } catch (ex) {
         console.log("Error in mapbox.setCenter: " + ex);
         reject(ex);
@@ -332,7 +339,9 @@ export class Mapbox extends MapboxCommon implements MapboxApi {
     });
   }
 
-  setZoomLevel(options: SetZoomLevelOptions, nativeMap?): Promise<any> {
+  set
+  
+  Level(options: SetZoomLevelOptions, nativeMap?): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
         let theMap: MGLMapView = nativeMap || _mapbox.mapView;
